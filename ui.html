@@ -1,0 +1,106 @@
+<!-- <h2>Rectangle Creator</h2>
+<p>Count: <input id="count" value="5"></p>
+<button id="create">Create</button>
+<button id="cancel">Cancel</button>
+<script>
+
+  document.getElementById('create').onclick = () => {
+    const textbox = document.getElementById('count');
+    const count = parseInt(textbox.value, 10);
+    parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
+  }
+
+  document.getElementById('cancel').onclick = () => {
+    parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+  }
+
+</script> -->
+
+
+<form id="pluginForm">
+  <h2>Colour Tint Genertor</h2>
+  <button id="Cancel">Cancel</button>
+
+  <fieldset>
+    <legend>Color Information</legend>
+    <p>
+      <label for="colorCode">Colour</label>
+      <input type="color" id="colorCode" name="colorCode" value="#000000">
+    </p>
+    <p>
+      <label for="colorName">Colour Name</label>
+      <input type="text" id="colorName" name="colorName" value="Primary">
+    </p>
+    <p>
+      <label for="tintNumber">Number of Tints</label>
+      <input type="number" value="10" min="1" max="10" id="tintNumber" name="tintNumber">
+    </p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Frame Information</legend>
+    <p>
+      <label for="circleSize">Circle Size</label>
+      <input type="number" value="120" min="48" id="circleSize" name="circleSize">
+    </p>
+    <p>
+      <label for="circleSpacing">Circle Spacing</label>
+      <input type="number" value="32" min="0" id="circleSpacing" name="circleSpacing">
+    </p>
+    <p>
+      <label>Frame Oriantation</label>
+
+      <input type="radio" name="direction" id="frameH" checked>
+      <label for="frameH">Horizontal</label>
+
+      <input type="radio" name="direction" id="frameV">
+      <label for="frameV">Vertical</label>
+    </p>
+  </fieldset>
+
+  <input type="hidden" name="frameDirection" value="horizontal">
+  <button id="generate">Generate Tints</button>
+</form>
+
+<script>
+
+  document.getElementById('generate').onclick = () => {
+    let myForm = document.querySelector('#pluginForm')
+    let myFormData = new FormData(myForm)
+
+    // Updating hidden field value based on radio selected(Hori/Verti)
+    if (document.querySelector('#frameV').checked) {
+      myFormData.set('frameDirection', 'vertical')
+    }
+    // Create an object and store form data in it
+    let myFormDataObj = {}
+    for (let [key, value] of myFormData) {
+      myFormDataObj[key] = value
+    }
+
+
+    // Simply displaying message based on button clicked
+    //parent.postMessage({ pluginMessage: { type: 'actionGenerate' } }, '*')
+
+    // Displaying message based on button clicked along with passing form data to code.ts file
+    parent.postMessage({ pluginMessage: { type: 'actionGenerate', myFormDataObj } }, '*')
+
+    // going to display all form fields data in clg
+    //console.log(myFormDataObj);
+  }
+
+  document.getElementById('Cancel').onclick = () => {
+    parent.postMessage({ pluginMessage: { type: 'actionExit' } }, '*')
+  }
+
+
+  /* document.getElementById('create').onclick = () => {
+     const textbox = document.getElementById('count');
+     const count = parseInt(textbox.value, 10);
+     parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
+   }
+ 
+   document.getElementById('cancel').onclick = () => {
+     parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+   }*/
+</script>
